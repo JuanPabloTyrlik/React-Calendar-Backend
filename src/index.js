@@ -1,3 +1,13 @@
 import express from 'express';
 
-console.log('Hello World!!!');
+const app = express();
+
+app.get('/', function (req, res) {
+    res.send({
+        ok: true,
+    });
+});
+
+app.listen(3000, () => {
+    console.log(`Listening on port ${3000}`);
+});
