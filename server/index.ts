@@ -7,6 +7,9 @@ const app = express();
 // Public Directory
 app.use(express.static('public'));
 
+// Parse body
+app.use(express.json());
+
 // Routes
 app.use('/api/auth', authRouter); // TODO: Auth: Login, Register, Renew Token
 // TODO: CRUD: Events
