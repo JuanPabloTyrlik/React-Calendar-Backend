@@ -1,7 +1,7 @@
 require('dotenv').config();
 import express from 'express';
 import authRouter from './routes/auth';
-import { dbConnection } from '../database/config';
+import { dbConnection } from './database/config';
 // Create Express Server
 const app = express();
 

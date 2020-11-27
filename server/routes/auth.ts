@@ -5,7 +5,7 @@
 
 import { Router } from 'express';
 import { check } from 'express-validator';
-import { fieldValidator } from '../../middlewares/fieldValidator';
+import { fieldValidator } from '../middlewares/fieldValidator';
 import { loginUser, registerUser, renewToken } from '../controllers/auth';
 const router = Router();
 
