@@ -7,6 +7,7 @@ import { Router } from 'express';
 import { check } from 'express-validator';
 import { fieldValidator } from '../middlewares/fieldValidator';
 import { loginUser, registerUser, renewToken } from '../controllers/auth';
+import { validateJWT } from '../middlewares/tokenValidator';
 const router = Router();
 
 router.post(
@@ -43,6 +44,6 @@ router.post(
     ],
     registerUser
 );
-router.post('/token', renewToken);
+router.get('/token', [validateJWT], renewToken);
 
 export default router;

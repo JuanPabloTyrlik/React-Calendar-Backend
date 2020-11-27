@@ -72,9 +72,21 @@ export const registerUser = async (req: Request, res: Response) => {
     }
 };
 
-export const renewToken = (req: Request, res: Response) => {
-    res.send({
-        ok: true,
-        message: 'Renew Token',
-    });
+export const renewToken = async (req: Request, res: Response) => {
+    const { uid, name } = req.body;
+    try {
+        const token = await generateJWT(uid, name);
+        res.status(200).send({
+            ok: true,
+            uid,
+            name,
+            token,
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({
+            ok: false,
+            message: 'Please contact the administrator',
+        });
+    }
 };

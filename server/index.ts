@@ -1,5 +1,6 @@
 require('dotenv').config();
 import express from 'express';
+import cors from 'cors';
 import authRouter from './routes/auth';
 import { dbConnection } from './database/config';
 // Create Express Server
@@ -8,6 +9,9 @@ const app = express();
 // Connect to DB
 dbConnection();
 
+// CORS
+app.use(cors());
+
 // Public Directory
 app.use(express.static('public'));
 
@@ -15,7 +19,7 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // Routes
-app.use('/api/auth', authRouter); // TODO: Auth: Login, Register, Renew Token
+app.use('/api/auth', authRouter);
 // TODO: CRUD: Events
 
 // Listen requests
