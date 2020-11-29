@@ -21,7 +21,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRouter);
-app.use('/api/events', eventRouter); // TODO: CRUD: Events
+app.use('/api/events', eventRouter);
 
 // Listen requests
 app.listen(process.env.PORT, () => {
