@@ -29,7 +29,16 @@ router.post(
     ],
     createEvent
 );
-router.put('/:id', updateEvent);
+router.put(
+    '/:id',
+    [
+        check('title', 'Title is required').not().isEmpty(),
+        check('start', 'Start date is required').custom(isValidDate),
+        check('end', 'End date is required').custom(isValidDate),
+        fieldValidator,
+    ],
+    updateEvent
+);
 router.delete('/:id', deleteEvent);
 
 export default router;

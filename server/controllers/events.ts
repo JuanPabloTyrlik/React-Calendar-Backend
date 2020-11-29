@@ -20,23 +20,92 @@ export const createEvent = async (req: Request, res: Response) => {
     }
 };
 // Read
-export const getEvents = (req: Request, res: Response) => {
+export const getEvents = async (req: Request, res: Response) => {
+    const events = await Event.find().populate('user', 'name');
     res.send({
         ok: true,
-        message: 'getEvents',
+        events,
     });
 };
 // Update
-export const updateEvent = (req: Request, res: Response) => {
-    res.send({
-        ok: true,
-        message: 'updateEvent',
-    });
+export const updateEvent = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const event = await Event.findById(id);
+        if (!event) {
+            return res.status(404).send({
+                ok: false,
+                message: 'Event not found',
+            });
+        }
+        if (event.user?.toString() !== req.body.uid) {
+            return res.status(403).send({
+                ok: false,
+                message: 'Access denied',
+            });
+        }
+        const { title, notes, start, end, uid } = req.body;
+        const newEvent = {
+            title,
+            notes,
+            start,
+            end,
+            user: uid,
+        };
+        const updatedEvent = await Event.findByIdAndUpdate(id, newEvent, {
+            new: true,
+        });
+        res.send({
+            ok: true,
+            event: updatedEvent,
+        });
+    } catch (err) {
+        if (err.name === 'CastError') {
+            return res.status(404).send({
+                ok: false,
+                message: 'Event not found',
+            });
+        }
+        console.log(err);
+        res.status(500).send({
+            ok: false,
+            message: 'Please contact the administrator',
+        });
+    }
 };
 // Delete
-export const deleteEvent = (req: Request, res: Response) => {
-    res.send({
-        ok: true,
-        message: 'deleteEvent',
-    });
+export const deleteEvent = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const event = await Event.findById(id);
+        if (!event) {
+            return res.status(404).send({
+                ok: false,
+                message: 'Event not found',
+            });
+        }
+        if (event.user?.toString() !== req.body.uid) {
+            return res.status(403).send({
+                ok: false,
+                message: 'Access denied',
+            });
+        }
+        await Event.findByIdAndDelete(id);
+        res.status(200).send({
+            ok: true,
+            message: 'Event deleted',
+        });
+    } catch (err) {
+        if (err.name === 'CastError') {
+            return res.status(404).send({
+                ok: false,
+                message: 'Event not found',
+            });
+        }
+        console.log(err);
+        res.status(500).send({
+            ok: false,
+            message: 'Please contact the administrator',
+        });
+    }
 };
