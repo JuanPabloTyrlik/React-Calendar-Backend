@@ -2,6 +2,7 @@ require('dotenv').config();
 import express from 'express';
 import cors from 'cors';
 import authRouter from './routes/auth';
+import eventRouter from './routes/events';
 import { dbConnection } from './database/config';
 // Create Express Server
 const app = express();
@@ -20,7 +21,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRouter);
-// TODO: CRUD: Events
+app.use('/api/events', eventRouter); // TODO: CRUD: Events
 
 // Listen requests
 app.listen(process.env.PORT, () => {

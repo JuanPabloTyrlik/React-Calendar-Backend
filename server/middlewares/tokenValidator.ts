@@ -22,10 +22,17 @@ export const validateJWT = (
         req.body = { ...req.body, uid: payload.uid, name: payload.name };
         next();
     } catch (err) {
-        console.log(err);
-        return res.status(400).send({
-            ok: false,
-            message: 'Invalid Bearer token',
-        });
+        if (err.name === 'TokenExpiredError') {
+            res.status(400).send({
+                ok: false,
+                message: 'Token expired',
+            });
+        } else {
+            console.log(err);
+            res.status(400).send({
+                ok: false,
+                message: 'Invalid Bearer token',
+            });
+        }
     }
 };
