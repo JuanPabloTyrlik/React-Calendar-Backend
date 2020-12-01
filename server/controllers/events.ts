@@ -39,9 +39,9 @@ export const updateEvent = async (req: Request, res: Response) => {
             });
         }
         if (event.user?.toString() !== req.body.uid) {
-            return res.status(403).send({
+            return res.status(401).send({
                 ok: false,
-                message: 'Access denied',
+                message: 'Unauthorized',
             });
         }
         const { title, notes, start, end, uid } = req.body;
@@ -85,9 +85,9 @@ export const deleteEvent = async (req: Request, res: Response) => {
             });
         }
         if (event.user?.toString() !== req.body.uid) {
-            return res.status(403).send({
+            return res.status(401).send({
                 ok: false,
-                message: 'Access denied',
+                message: 'Unauthorized',
             });
         }
         await Event.findByIdAndDelete(id);
